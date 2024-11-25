@@ -1,5 +1,5 @@
 import { RemoveTSPrefix } from ".";
-import { Event } from "@/internal/helpers";
+import { Event } from "../internal/helpers";
 import { Client } from "discord.js";
 import FileSystem from "node:fs";
 
