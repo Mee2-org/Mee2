@@ -30,13 +30,14 @@ export interface Command {
 }
 
 export interface CommandContext {
+    client: Client<true>;
     interaction: ChatInputCommandInteraction<"cached">;
     prisma: PrismaClient
 }
 
 export function createCommand(
     data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder,
-    run?: ((interaction: ChatInputCommandInteraction) => unknown) | undefined,
+    run?: ((ctx: CommandContext) => unknown) | undefined,
     _options?: CommandOptions
 ) {
     const options = _options ?? {

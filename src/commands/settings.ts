@@ -25,5 +25,8 @@ export default createCommand(
             .addChannelTypes([ChannelType.GuildText])
             .setRequired(false)
         })
-    })
+    }),
+    (ctx) => {
+        
+    }
 )
