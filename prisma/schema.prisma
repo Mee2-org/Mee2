@@ -8,15 +8,23 @@ generator client {
 }
 
 model Settings {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
-  guild           Guild @relation(fields: [id], references: [id])
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  guild           Guild   @relation(fields: [id], references: [id])
   welcome_status  Boolean?
   welcome_channel String?
   
 }
 
+model Moderation {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  guild            Guild   @relation(fields: [id], references: [id])
+  moderation_roles String[]
+  log_channel      String?
+}
+
 model Guild {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  guildId       String @unique
-  settings Settings?
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  guildId       String      @unique
+  settings      Settings?
+  moderation    Moderation?
 }

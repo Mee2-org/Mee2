@@ -7,8 +7,8 @@ export async function ReadCommand(client: Client) {
     const files = FileSystem.readdirSync("./src/commands/").filter(i => i != "sub");
     
     for (const file of files) {
-        const File = await import(`../commands/${RemoveTSPrefix(file)}`);
-        const command: Command = File.default;
+        const command_file = await import(`../commands/${RemoveTSPrefix(file)}`);
+        const command: Command = command_file.default;
         
         if (!command) {
             client.logger.warn("fn(ReadCommand)", `${file} does not have command data.`);

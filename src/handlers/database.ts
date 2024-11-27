@@ -22,11 +22,9 @@ export function ConnectDatabase(client: Client) {
     });
 
     prisma.$connect()
-    .then(() => {
-        client.logger.success("fn(CB)", "Prisma connected to MongoDB.");
-    })
+    .then(() => client.logger.success("db", "Prisma connected to MongoDB."))
     .catch(async (reason) => {
-        client.logger.error("fn(CB)", reason);
+        client.logger.error("db", reason);
         await prisma.$disconnect()
     });
 }

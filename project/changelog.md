@@ -1,3 +1,29 @@
+# @0.2.15
+> *☕️ | Minor Update*
+
+- **Developed By:** @0sapphy
+- **Release Date:** 27/11/2024
+
+## New
+
+- ESLint.
+- Utility helpers.
+- Moderation commands.
+
+## Updated
+
+- Command
+  - Handle command options (permisisons & others)
+  - `CommandContext.interaction` CacheType
+    - e.g `CommandContext<"cached">`
+- Logging Style (Added: .debug)
+- Prettier Code
+- /INFO -> /project
+
+## Removed
+
+- None
+
 # @0.2.5 (& @0.2.7)
 > *✨ | Update (0.2.5)*
 

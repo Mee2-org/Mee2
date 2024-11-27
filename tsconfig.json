@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "lib": ["DOM.Iterable", "DOM"],
         "module": "CommonJS",
         "target": "ES2023",
         "esModuleInterop": true,

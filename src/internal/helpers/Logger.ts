@@ -14,43 +14,53 @@ export class Logger {
         this.context = options ?? { tag: "logger" }
     }
 
-    public success(ctx: string, ...message: any[]) {
-        console.info(
+    public debug(ctx: string, ...message: unknown[]) {
+        console.debug(
             chalk.black(this.date()),
-            chalk.bgBlue("  SUCCESS  "),
-            chalk.magentaBright(`<<${this.context.tag}>>`),
-            chalk.red("[", chalk.green(ctx), "]"), "\n",
-            `     ${chalk.greenBright(">>")}`, ...message
+            chalk.bgYellow("  DEBUG  "),
+            chalk.magentaBright(`«${this.context.tag}»`),
+            chalk.red("[" + chalk.dim(ctx) + "]") + ":",
+            ...message
         )
     }
 
-    public info(ctx: string, ...message: any[]) {
+    public success(ctx: string, ...message: unknown[]) {
         console.info(
             chalk.black(this.date()),
-            chalk.bgBlue("  INFO  "),
-            chalk.magentaBright(`<<${this.context.tag}>>`),
-            chalk.red("[", chalk.cyan(ctx), "]"), "\n",
-            `     ${chalk.cyanBright(">>")}`, ...message
+            chalk.bgGrey("  SUCCESS  "),
+            chalk.magentaBright(`«${this.context.tag}»`),
+            chalk.red("[" + chalk.green(ctx) + "]") + ":",
+            ...message
+        )
+    }
+
+    public info(ctx: string, ...message: unknown[]) {
+        console.info(
+            chalk.black(this.date()),
+            chalk.bgGrey("  INFO  "),
+            chalk.magentaBright(`«${this.context.tag}»`),
+            chalk.red("[" + chalk.cyan(ctx) + "]")+ ":",
+            ...message
         );
     }
 
-    public warn(ctx: string, ...message: any[]) {
+    public warn(ctx: string, ...message: unknown[]) {
         console.warn(
             chalk.black(this.date()),
-            chalk.bgBlue("  WARN  "),
-            chalk.magentaBright(`<<${this.context.tag}>>`),
-            chalk.red("[", chalk.yellow(ctx), "]"), "\n",
-            `     ${chalk.yellowBright(">>")}`, ...message
+            chalk.bgGrey("  WARN  "),
+            chalk.magentaBright(`«${this.context.tag}»`),
+            chalk.red("[" + chalk.yellow(ctx) + "]") + ":",
+            ...message
         );
     }
 
-    public error(ctx: string, ...message: any[]) {
+    public error(ctx: string, ...message: unknown[]) {
         console.error(
             chalk.black(this.date()),
-            chalk.bgBlue("  ERROR  "),
-            chalk.magentaBright(`<<${this.context.tag}>>`),
-            chalk.red("[", chalk.red(ctx), "]"), "\n",
-            `     ${chalk.redBright(">>")}`, ...message
+            chalk.bgGrey("  ERROR  "),
+            chalk.magentaBright(`«${this.context.tag}»`),
+            chalk.red("[" + chalk.red(ctx) + "]") + ":",
+            ...message
         );
     }
 

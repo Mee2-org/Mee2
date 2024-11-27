@@ -15,9 +15,10 @@ export async function ReadEvent(client: Client) {
         const files = FileSystem.readdirSync(`./src/events/${folder}/`);
 
         for (const file of files) {
-            const File = await import(`../events/${folder}/${RemoveTSPrefix(file)}`);
-            const event = File.default as Event;
+            const event_file = await import(`../events/${folder}/${RemoveTSPrefix(file)}`);
+            const event = event_file.default as Event;
             const type = event.data.once ? "once" : "on";
+            
             client[type](event.data.name, (...args) => event.run(...args));
         }
     }

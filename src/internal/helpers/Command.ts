@@ -7,7 +7,8 @@ import {
     PermissionsString,
     Routes,
     SlashCommandBuilder, 
-    SlashCommandSubcommandsOnlyBuilder
+    SlashCommandSubcommandsOnlyBuilder,
+    CacheType
 } from "discord.js";
 import { RawApplicationCommandData } from "discord.js/typings/rawDataTypes";
 
@@ -29,9 +30,9 @@ export interface Command {
     options?: CommandOptions;
 }
 
-export interface CommandContext {
+export interface CommandContext<T extends CacheType = CacheType> {
     client: Client<true>;
-    interaction: ChatInputCommandInteraction<"cached">;
+    interaction: ChatInputCommandInteraction<T>;
     prisma: PrismaClient
 }
 
@@ -55,13 +56,13 @@ export function createCommand(
     if (j_data.options) {
         for (const option of j_data.options) {
             if (option.type === ApplicationCommandOptionType.Subcommand) {
-                options.path = [{ K: option.name, V: `${data.name}/${option.name}` }];
+                options.path.push({ K: option.name, V: `${data.name}/${option.name}` });
             }
 
             if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
                 if (option.options) {
                     for (const sub of option.options) {
-                        options.path = [{ K: sub.name, V: `${data.name}/${option.name}/${sub.name}` }];
+                        options.path.push({ K: sub.name, V: `${data.name}/${option.name}/${sub.name}` });
                     }
                 }
             }
@@ -77,13 +78,14 @@ export function createCommand(
 
 export async function deployApplicationCommands(client: Client) {
     const commands = [];
+    
     for (const command of [...client.commands.values()]) {
         commands.push(command.data);
     }
-
+    
     client.rest.setToken(process.env.DISCORD_TOKEN);
     client.logger.info("fn(DAC)", `Deploying commands to Discord.`);
-
+    
     const data = await client.rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
         body: commands
     }) as RESTPutAPIApplicationCommandsJSONBody[];

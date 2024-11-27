@@ -25,8 +25,11 @@ export default createCommand(
             .addChannelTypes([ChannelType.GuildText])
             .setRequired(false)
         })
-    }),
-    (ctx) => {
-        
+    }), undefined,
+    { 
+        permissions: { 
+            guild_only: true,
+            member_permissions: ["ManageGuild"]
+        } 
     }
 )

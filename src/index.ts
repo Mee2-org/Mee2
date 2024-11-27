@@ -4,7 +4,10 @@ import { Logger } from "./internal/helpers";
 import { Command, Database, Event } from "./handlers";
 import config from "./internal/config";
 
-const client = new Client({ intents: config.intents });
+const client = new Client({ 
+    intents: config.intents,
+    shards: config.shards
+});
 
 client.commands = new Collection();
 client.logger = new Logger({ tag: "client" });

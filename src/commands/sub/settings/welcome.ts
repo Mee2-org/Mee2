@@ -1,7 +1,7 @@
 import { ChannelType, EmbedBuilder } from "discord.js";
 import { CommandContext } from "../../../internal/helpers";
 
-export async function run(ctx: CommandContext) {
+export async function run(ctx: CommandContext<"cached">) {
     await ctx.interaction.deferReply();
 
     const status = ctx.interaction.options.getBoolean("enabled", true);
