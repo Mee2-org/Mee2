@@ -1,3 +1,22 @@
+# @0.3.1
+> *🔨 | Moderation Update*
+
+- **Developed By:** @0sapphy
+- **Release Date:** 2/12/2024
+
+# New 
+
+- actionCreate (Log actions.)
+- Cases
+
+# Updated 
+
+- None
+
+# Removed
+
+- None
+
 # @0.2.15
 > *☕️ | Minor Update*
 

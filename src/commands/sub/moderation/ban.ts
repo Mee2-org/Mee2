@@ -1,6 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from "discord.js";
 import { CommandContext } from "../../../internal/helpers";
 import { createWarning } from "../../../utils";
+import crypto from "node:crypto"
 
 export async function run(ctx: CommandContext<"cached">) {
     await ctx.interaction.deferReply({ fetchReply: true });
@@ -57,8 +58,6 @@ export async function run(ctx: CommandContext<"cached">) {
     });
     
     collector.on("collect", async (interaction) => {
-        await interaction.deferReply({ ephemeral: true });
-        
         if (interaction.customId === "--n") {
             const embed = new EmbedBuilder()
             .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
@@ -67,8 +66,57 @@ export async function run(ctx: CommandContext<"cached">) {
             .setTimestamp();
             
             await ctx.interaction.deleteReply();
-            await interaction.editReply({ embeds: [embed] });
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             return;
+        }
+
+        await interaction.deferUpdate();
+
+        try {
+            const DMEmbed = new EmbedBuilder()
+            .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL()! })
+            .setDescription(`**You have been banned from ${interaction.guild.name}**\n\n#- Message Sent From: ${interaction.guild.name} (${interaction.guildId})`)
+            .setColor("Red")
+            .setTimestamp();
+
+            await targetUser.send({ embeds: [DMEmbed] })
+            .catch((rs) => ctx.client.logger.error(rs));
+
+            await interaction.guild.bans.create(targetUser, { reason });
+
+            const embed = new EmbedBuilder()
+            .setDescription(`:white_check_mark: | ${targetUser.username} has been banned`)
+            .setColor("Blurple")
+            .setTimestamp();
+
+            await interaction.editReply({ embeds: [embed], components: [] });
+
+            const res = await ctx.prisma.cases.create({
+                data: {
+                    guildId: interaction.guildId,
+                    userId: targetUser.id,
+                    caseId: crypto.randomInt(10_000),
+                    moderatorId: ctx.interaction.user.id,
+                    reason,
+                    createdAt: Date(),
+                    deleteable: true,
+                    editable: true
+                }
+            });
+
+            ctx.client.emit("actionCreate", {
+                ctx,
+                reason,
+                type: "ban",
+                case: res,
+                guild: interaction.guild,
+                moderator: ctx.interaction.user,
+                target: targetUser,
+            })
+
+            return;
+        } catch (error) {
+            ctx.client.logger.error("ban", error);
         }
     });
 }

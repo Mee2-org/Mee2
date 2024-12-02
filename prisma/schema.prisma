@@ -22,6 +22,18 @@ model Moderation {
   log_channel      String?
 }
 
+model Cases {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  guildId     String
+  caseId      Int
+  userId      String
+  moderatorId String
+  reason      String   @default("No Reason Provided")
+  createdAt   String
+  deleteable  Boolean  @default(true)
+  editable    Boolean  @default(true)
+}
+
 model Guild {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   guildId       String      @unique
